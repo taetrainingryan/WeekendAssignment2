@@ -8,13 +8,12 @@ import io.realm.RealmObject;
 
 public class RealmTracks extends RealmObject{
 
-    String trackName, artistName, trackPrice;
-    byte[] trackImage;
+    String trackName, artistName, trackPrice, trackImage;
 
     public RealmTracks() {
     }
 
-    public RealmTracks(String trackName, String artistName, String trackPrice, byte[] trackImage) {
+    public RealmTracks(String trackName, String artistName, String trackPrice, String trackImage) {
         this.trackName = trackName;
         this.artistName = artistName;
         this.trackPrice = trackPrice;
@@ -45,11 +44,11 @@ public class RealmTracks extends RealmObject{
         this.trackPrice = trackPrice;
     }
 
-    public byte[] getTrackImage() {
+    public String getTrackImage() {
         return trackImage;
     }
 
-    public void setTrackImage(byte[] trackImage) {
+    public void setTrackImage(String trackImage) {
         this.trackImage = trackImage;
     }
 }

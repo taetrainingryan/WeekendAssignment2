@@ -1,6 +1,9 @@
 package com.example.ryan.weekendassignment2.model.realm;
 
+import com.example.ryan.weekendassignment2.model.TrackDetails;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -54,9 +57,9 @@ public class RealmController {
     Returns list of all customers.
      */
 
-    public ArrayList<RealmTracks> getTracksList(){
+    public List<RealmTracks> getTracksList(){
 
-        ArrayList<RealmTracks> tracks = new ArrayList<>();
+        List<RealmTracks> tracks = new ArrayList<>();
 
         RealmResults<RealmTracks> realmTracksRealmResults = realm.where(RealmTracks.class).findAll();
 
@@ -67,4 +70,32 @@ public class RealmController {
         return tracks;
 
     }
+
+    public void saveTracks(final RealmTrackList trackDetails){
+
+        realm.executeTransaction(new Realm.Transaction() {
+
+            @Override
+            public void execute(Realm realm) {
+
+                realm.copyToRealm(trackDetails);
+
+            }
+        });
+    }
+
+    public List<TrackDetails> getTracks(){
+
+        List<TrackDetails> tracks = new ArrayList<>();
+
+        RealmResults<RealmTrackList> realmTracksRealmResults = realm.where(RealmTrackList.class).findAll();
+
+        for(RealmTrackList realmTracks: realmTracksRealmResults){
+            tracks = realmTracks.getTrackDetails();
+        }
+
+        return tracks;
+
+    }
+
 }

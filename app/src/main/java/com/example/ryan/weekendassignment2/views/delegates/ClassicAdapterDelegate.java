@@ -3,6 +3,8 @@ package com.example.ryan.weekendassignment2.views.delegates;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -18,11 +20,20 @@ import android.widget.Toast;
 import com.example.ryan.weekendassignment2.MainActivity;
 import com.example.ryan.weekendassignment2.R;
 import com.example.ryan.weekendassignment2.model.TrackDetails;
+import com.example.ryan.weekendassignment2.model.realm.RealmController;
+import com.example.ryan.weekendassignment2.model.realm.RealmTrackList;
+import com.example.ryan.weekendassignment2.model.realm.RealmTracks;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
