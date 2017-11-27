@@ -34,7 +34,6 @@ public class ClassicAdapterDelegate extends AdapterDelegate <List<TrackDetails>>
 
     public ClassicAdapterDelegate(Activity activity) {
         layoutInflater = activity.getLayoutInflater();
-
         activity1 = activity;
         context = activity.getApplicationContext();
     }

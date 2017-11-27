@@ -21,6 +21,9 @@ public class AppDataManager implements IDataManager {
 
     @Override
     public Observable<TrackModel> getTrackModel(String classic) {
-        return apiHelper.getTrackModel("classic");
+        return apiHelper.getTrackModel(classic);
     }
+
+
+
 }

@@ -21,6 +21,6 @@ public class AppApiHelper implements ApiHelper {
 
     @Override
     public Observable<TrackModel> getTrackModel(String classic) {
-        return requestInterface.getTrackModel("classic");
+        return requestInterface.getTrackModel(classic);
     }
 }

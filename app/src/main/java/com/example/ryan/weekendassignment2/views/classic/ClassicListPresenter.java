@@ -4,6 +4,7 @@ import android.os.SystemClock;
 import android.widget.Toast;
 
 import com.example.ryan.weekendassignment2.data.IDataManager;
+import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 import com.example.ryan.weekendassignment2.data.network.model.TrackModel;
 import com.example.ryan.weekendassignment2.views.ui.base.BasePresenter;
 import com.example.ryan.weekendassignment2.views.ui.base.MvpPresenter;
@@ -34,7 +35,6 @@ implements IClassicListMvpPresenter<V> {
     @Override
     public void onViewPrepared() {
 
-
                 getDataManager().getTrackModel("classic")
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
@@ -47,8 +47,7 @@ implements IClassicListMvpPresenter<V> {
                             @Override
                             public void onNext(TrackModel trackModel) {
 
-                                List results = trackModel.getResults();
-
+                                List<TrackDetails> results = trackModel.getResults();
                                 getMvpView().onFetchDataSuccess(results);
 
                             }

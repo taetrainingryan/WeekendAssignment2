@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.ryan.weekendassignment2.MainActivity;
 import com.example.ryan.weekendassignment2.R;
 import com.example.ryan.weekendassignment2.ViewAdapter;
 import com.example.ryan.weekendassignment2.data.AppDataManager;
@@ -23,10 +25,14 @@ import com.example.ryan.weekendassignment2.services.ServerConnection;
 import com.example.ryan.weekendassignment2.views.classic.ClassicListPresenter;
 import com.example.ryan.weekendassignment2.views.classic.IClassicListMvpView;
 import com.example.ryan.weekendassignment2.views.ui.utils.rx.AppSchedulerProvider;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 /**
@@ -48,6 +54,11 @@ public class ClassicFragment extends Fragment implements IClassicListMvpView {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,23 +71,28 @@ public class ClassicFragment extends Fragment implements IClassicListMvpView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         requestInterface = ServerConnection.getServerConnection();
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh);
 
         apiPinged = SystemClock.elapsedRealtime();
 
         Realm.init(getContext());
-
         initializeRealm();
-        initializeRecyclerView();
-        initializePresenter();
-        getData();
-        initializeSwipeListener();
+
+//        initializeRecyclerView();
+//        initializePresenter();
+//        getData();
+//        initializeSwipeListener();]
+
+        checkNetwork();
 
     }
 
     private void getData() {
 
+
+        Toast.makeText(getContext(), "Api Pinged", Toast.LENGTH_SHORT).show();
         classicListPresenter.onViewPrepared();
     }
 
@@ -92,9 +108,6 @@ public class ClassicFragment extends Fragment implements IClassicListMvpView {
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.rvClassicTracks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-//        viewAdapter = new ViewAdapter(getActivity(), results);
-//
-//        recyclerView.setAdapter(viewAdapter);
     }
 
     public void initializeRealm(){
@@ -201,6 +214,32 @@ public class ClassicFragment extends Fragment implements IClassicListMvpView {
 //        RealmController.getInstance().saveTracks(realmTrackList);
 //
 //    }
+
+    public void checkNetwork(){
+
+        ReactiveNetwork.observeInternetConnectivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override public void accept(Boolean isConnectedToInternet) {
+
+                        if (isConnectedToInternet == true){
+
+
+                            initializeRecyclerView();
+                            initializePresenter();
+                            getData();
+                            initializeSwipeListener();
+                        }
+
+                        else{
+
+                            Toast.makeText(getContext(), "no internet connection detected", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
 
 
     @Override
