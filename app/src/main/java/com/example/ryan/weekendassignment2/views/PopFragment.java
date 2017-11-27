@@ -10,13 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ryan.weekendassignment2.R;
 import com.example.ryan.weekendassignment2.ViewAdapter;
-import com.example.ryan.weekendassignment2.model.TrackDetails;
-import com.example.ryan.weekendassignment2.model.TrackModel;
-import com.example.ryan.weekendassignment2.services.RequestInterface;
+import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
+import com.example.ryan.weekendassignment2.data.network.model.TrackModel;
+import com.example.ryan.weekendassignment2.data.network.service.RequestInterface;
 import com.example.ryan.weekendassignment2.services.ServerConnection;
 
 import java.util.ArrayList;

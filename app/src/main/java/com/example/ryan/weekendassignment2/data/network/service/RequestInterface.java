@@ -1,7 +1,6 @@
-package com.example.ryan.weekendassignment2.services;
+package com.example.ryan.weekendassignment2.data.network.service;
 
-import com.example.ryan.weekendassignment2.model.TrackModel;
-import com.example.ryan.weekendassignment2.util.API_List;
+import com.example.ryan.weekendassignment2.data.network.model.TrackModel;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

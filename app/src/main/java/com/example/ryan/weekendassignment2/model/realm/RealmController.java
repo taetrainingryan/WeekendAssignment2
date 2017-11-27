@@ -1,6 +1,6 @@
 package com.example.ryan.weekendassignment2.model.realm;
 
-import com.example.ryan.weekendassignment2.model.TrackDetails;
+import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,31 +71,5 @@ public class RealmController {
 
     }
 
-    public void saveTracks(final RealmTrackList trackDetails){
-
-        realm.executeTransaction(new Realm.Transaction() {
-
-            @Override
-            public void execute(Realm realm) {
-
-                realm.copyToRealm(trackDetails);
-
-            }
-        });
-    }
-
-    public List<TrackDetails> getTracks(){
-
-        List<TrackDetails> tracks = new ArrayList<>();
-
-        RealmResults<RealmTrackList> realmTracksRealmResults = realm.where(RealmTrackList.class).findAll();
-
-        for(RealmTrackList realmTracks: realmTracksRealmResults){
-            tracks = realmTracks.getTrackDetails();
-        }
-
-        return tracks;
-
-    }
 
 }

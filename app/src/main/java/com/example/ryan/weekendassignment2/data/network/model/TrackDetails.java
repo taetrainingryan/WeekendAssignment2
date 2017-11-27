@@ -1,4 +1,4 @@
-package com.example.ryan.weekendassignment2.model;
+package com.example.ryan.weekendassignment2.data.network.model;
 
 /**
  * Created by Ryan on 24/11/2017.

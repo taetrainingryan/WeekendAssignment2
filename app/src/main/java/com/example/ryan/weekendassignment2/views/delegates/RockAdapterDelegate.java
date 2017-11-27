@@ -15,21 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ryan.weekendassignment2.R;
-import com.example.ryan.weekendassignment2.model.TrackDetails;
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
-
-import android.app.Activity;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.ryan.weekendassignment2.R;
-import com.example.ryan.weekendassignment2.model.TrackDetails;
+import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import java.util.List;

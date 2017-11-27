@@ -13,7 +13,7 @@
 //import android.widget.ImageView;
 //import android.widget.TextView;
 //
-//import com.example.ryan.weekendassignment2.model.TrackDetails;
+//import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 //
 //import java.util.List;package com.example.ryan.weekendassignment2;
 //
@@ -26,7 +26,7 @@
 //import android.widget.ImageView;
 //import android.widget.TextView;
 //
-//import com.example.ryan.weekendassignment2.model.TrackDetails;
+//import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 //
 //import java.util.List;
 //

@@ -1,4 +1,4 @@
-package com.example.ryan.weekendassignment2.util;
+package com.example.ryan.weekendassignment2.data.network.service;
 
 /**
  * Created by Ryan on 24/11/2017.

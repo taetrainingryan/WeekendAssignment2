@@ -1,8 +1,6 @@
 package com.example.ryan.weekendassignment2.views;
 
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -10,39 +8,31 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ryan.weekendassignment2.R;
 import com.example.ryan.weekendassignment2.ViewAdapter;
-import com.example.ryan.weekendassignment2.model.TrackDetails;
-import com.example.ryan.weekendassignment2.model.TrackModel;
+import com.example.ryan.weekendassignment2.data.AppDataManager;
+import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 import com.example.ryan.weekendassignment2.model.realm.RealmController;
-import com.example.ryan.weekendassignment2.model.realm.RealmTrackList;
-import com.example.ryan.weekendassignment2.model.realm.RealmTracks;
-import com.example.ryan.weekendassignment2.services.RequestInterface;
+import com.example.ryan.weekendassignment2.data.network.service.RequestInterface;
 import com.example.ryan.weekendassignment2.services.ServerConnection;
+import com.example.ryan.weekendassignment2.views.classic.ClassicListPresenter;
+import com.example.ryan.weekendassignment2.views.classic.IClassicListMvpView;
+import com.example.ryan.weekendassignment2.views.ui.utils.rx.AppSchedulerProvider;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassicFragment extends Fragment {
+public class ClassicFragment extends Fragment implements IClassicListMvpView {
 
     RequestInterface requestInterface;
     TrackDetails trackDetails;
@@ -52,8 +42,7 @@ public class ClassicFragment extends Fragment {
     private ViewAdapter viewAdapter;
     long apiPinged;
     SwipeRefreshLayout swipeRefreshLayout;
-
-
+    private ClassicListPresenter classicListPresenter;
 
     public ClassicFragment() {
         // Required empty public constructor
@@ -79,8 +68,23 @@ public class ClassicFragment extends Fragment {
         Realm.init(getContext());
 
         initializeRealm();
+        initializeRecyclerView();
+        initializePresenter();
+        getData();
+        initializeSwipeListener();
 
-        makeApiRequest();
+    }
+
+    private void getData() {
+
+        classicListPresenter.onViewPrepared();
+    }
+
+    public void initializePresenter(){
+
+        classicListPresenter = new ClassicListPresenter(new AppDataManager(), new AppSchedulerProvider(), new CompositeDisposable());
+        classicListPresenter.onAttach(this);
+
     }
 
 
@@ -88,9 +92,9 @@ public class ClassicFragment extends Fragment {
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.rvClassicTracks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        viewAdapter = new ViewAdapter(getActivity(), results);
-
-        recyclerView.setAdapter(viewAdapter);
+//        viewAdapter = new ViewAdapter(getActivity(), results);
+//
+//        recyclerView.setAdapter(viewAdapter);
     }
 
     public void initializeRealm(){
@@ -113,67 +117,67 @@ public class ClassicFragment extends Fragment {
         }
     }
 
-    public void makeApiRequest(){
-
-        if (timeExpired(apiPinged) || results == null){
-
-            requestInterface.getTrackModel("classic")
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Observer<TrackModel>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(TrackModel trackModel) {
-
-                            results = new ArrayList<>(trackModel.getResults());
-
-                            initializeRecyclerView();
 
 
+//    public void makeApiRequest(){
+//
+//        if (timeExpired(apiPinged) || results == null){
+//
+//            requestInterface.getTrackModel("classic")
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeOn(Schedulers.io())
+//                    .subscribe(new Observer<TrackModel>() {
+//                        @Override
+//                        public void onSubscribe(Disposable d) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onNext(TrackModel trackModel) {
+//
+//                            results = new ArrayList<>(trackModel.getResults());
+//
+//                            initializeRecyclerView();
+//
+//                            apiPinged = SystemClock.elapsedRealtime();
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//
+//                            initializeSwipeListener();
+//
+//
+//                        }
+//
+//                    });
+//
+//
+//            Toast.makeText(getContext(), "Api Pinged", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//        else{
+//
+//            results = RealmController.getInstance().getTracks();
+//
+//            Toast.makeText(getContext(), "results size: " + String.valueOf(results.size()), Toast.LENGTH_SHORT).show();
+//
+//            initializeRecyclerView();
+//
+//            //Toast.makeText(getContext(), "Database pinged", Toast.LENGTH_SHORT).show();
+//
+//
+//        }
 
-                            apiPinged = SystemClock.elapsedRealtime();
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                            initializeSwipeListener();
-
-
-                        }
-
-                    });
-
-
-            Toast.makeText(getContext(), "Api Pinged", Toast.LENGTH_SHORT).show();
-
-        }
-
-        else{
-
-            results = RealmController.getInstance().getTracks();
-
-            Toast.makeText(getContext(), "results size: " + String.valueOf(results.size()), Toast.LENGTH_SHORT).show();
-
-            initializeRecyclerView();
-
-            //Toast.makeText(getContext(), "Database pinged", Toast.LENGTH_SHORT).show();
-
-
-        }
-
-
-    }
+//    }
 
         public void initializeSwipeListener(){
         swipeRefreshLayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
@@ -183,7 +187,7 @@ public class ClassicFragment extends Fragment {
                         // This method performs the actual data-refresh operation.
                         // The method calls setRefreshing(false) when it's finished.
 
-                        makeApiRequest();
+                        viewAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
 
                     }
@@ -191,12 +195,72 @@ public class ClassicFragment extends Fragment {
         );
     }
 
-    public void saveToDatabase(List trackDetails){
+//    public void saveToDatabase(List trackDetails){
+//
+//        RealmTrackList realmTrackList = new RealmTrackList(trackDetails);
+//        RealmController.getInstance().saveTracks(realmTrackList);
+//
+//    }
 
-        RealmTrackList realmTrackList = new RealmTrackList(trackDetails);
-        RealmController.getInstance().saveTracks(realmTrackList);
+
+    @Override
+    public void onFetchDataSuccess(List<TrackDetails> TrackDetails) {
+
+            results = TrackDetails;
+
+        viewAdapter = new ViewAdapter(getActivity(), results);
+
+        recyclerView.setAdapter(viewAdapter);
 
     }
 
+    @Override
+    public void onFetchDataError(String message) {
 
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void openActivityOnTokenExpire() {
+
+    }
+
+    @Override
+    public void onError(int resId) {
+
+    }
+
+    @Override
+    public void onError(String message) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void showMessage(int resId) {
+
+    }
+
+    @Override
+    public boolean isNetworkConnected() {
+        return false;
+    }
+
+    @Override
+    public void hideKeyboard() {
+
+    }
 }

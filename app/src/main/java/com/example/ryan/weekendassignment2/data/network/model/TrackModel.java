@@ -1,4 +1,4 @@
-package com.example.ryan.weekendassignment2.model;
+package com.example.ryan.weekendassignment2.data.network.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

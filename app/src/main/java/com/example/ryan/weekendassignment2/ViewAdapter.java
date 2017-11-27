@@ -1,16 +1,10 @@
 package com.example.ryan.weekendassignment2;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.example.ryan.weekendassignment2.model.TrackDetails;
+import com.example.ryan.weekendassignment2.data.network.model.TrackDetails;
 import com.example.ryan.weekendassignment2.views.delegates.ClassicAdapterDelegate;
 import com.example.ryan.weekendassignment2.views.delegates.PopAdapterDelegate;
 import com.example.ryan.weekendassignment2.views.delegates.RockAdapterDelegate;
